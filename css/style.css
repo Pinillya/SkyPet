@@ -1,0 +1,59 @@
+#camDivTop, #camDivRight, #camDivLeft, #camDivBottom
+{
+    /*visibility: hidden;*/
+    opacity:0;
+    z-index: 2;
+}
+#camDivTop
+{
+
+    position: absolute;
+    float: top;
+    left: 0px;
+    top: 0;
+    height: 150px;
+    width: 100%;
+    text-align: center;
+    background-color: eeffaa;
+    border-radius: 2px;
+    border-color: ee4499;
+    /*overflow:hidden;*/
+
+}
+#camDivBottom
+{
+
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    height: 150px;
+    width: 100%;
+    text-align: center;
+    background-color: eeffaa;
+    border-radius: 2px;
+    border-color: 0xee4499;
+}
+#camDivLeft
+{
+
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 150px;
+    text-align: center;
+    background-color: eeffaa;
+    border-radius: 2px;
+    border-color: 0xee4499;
+}
+#camDivRight
+{
+
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 100%;
+    width: 150px;
+    text-align: center;
+
+}

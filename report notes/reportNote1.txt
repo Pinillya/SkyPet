@@ -1,0 +1,104 @@
+
+*****Kommer til å formattere den å legge ut som .doc eller noe soon(tm)******
+
+January 20th 2014
+
+SkyPet Pilot Project
+Roger Wojciech Wlosek
+
+forword ///// ER IKKE MED!
+
+We are working on a browser based AI simulation with interactive 3d graphics and multiplayer functionality.
+One part of the project is to make the AI as realistic and sophisticated as possible, other one is to provide entertaining and interaktive experience for users / players, as they will be given a task to watch over their creatures welbeing and ensure it's habitat is suitable for further development. Such can be achieved by introducing various objects for creature to interact with, also, providing it food and attention.
+
+problem / task
+
+
+During earliest stages in development, basic skeleton of the application and simple scene was set up. Goals for this section were as follows:
+
+ - Implement physics library into the application, for testing purposes.
+ - Scene must contain an object resembeling a floating island in the center.
+ - Handle mouse imput.
+ - Use user input for basic object interaction.
+ - Implement suitable camera controls.
+
+
+
+
+We will attempt to find out whether or not a physics library is worth having in our application. For this, we will use Physi.js which derives from ammo.js, which is a port from Bullet Physics. It is very simple to use and lightweight so it should not affect overall performance too much. Reasoning behind this choice is simple - Physijs is a wrapper for Three.js which makes working with both smooth and easy.
+
+
+For this stage we are using a .png image as our pet / creature. Original idea was to combine 3d with 2d in order to achieve theatre like scenery. So far object look very flat, and possible solutin is to extrude the shapes a little in the z axis in order to give them some depth. Finding out how to do this will be important for overall feel of the game assuming we are going to stick to our current design chioces.
+
+
+Allowing user to interact with the scene is very rather simple in theory, implementation may be problematic. The whole system will consist of event handlers which, according to users action, will convert mouse coordinates into 3d space cordinates and vice versa.
+
+!!!!! Procedure and results
+
+Tool used for rendering and programming graphics was Three.js, as it is the best JavaScript API for 3D graphics currently aviable, only downsite being it's poor documentation. This made the initial learning process more lengthy than we would like, yet Three.js fits perfectly for our purposes.
+
+Physijs was easy to implement, yet it forced us to using python3 simple server instead of apache localhost for testing. Reason for that is that certain worker scripts for Physijs such as ammo.js, are not able to execute on localhost.
+
+Initial application draft was created in a single .html file and was meant for practice and experimentation in order to gain some actual knowledge about THREE.js. As it was getting more chaotic and harder to read, proper file structure was introduced in order to make development as efficient as possible by making it easy for all the group members to add and modify resources. Entire project directory was then uploaded on github.com in order to provide easy acces to necceserry files to all involved in the project.
+
+Using freshly gained THREE.js knowledge we were able to set up a basic scene using WebGl for graphics rendering. At this stage, our art assets were still very early in the concept phase, which meant that in order to find out how our application behaves with different types of objects we needed to use temporary ones.
+
+After a crash course in Blender, several 3D models were created, textured and exported. By default, Blender does not support exorting models to JSON format, which meant using .obj. This was not practical for our purpose as our initial plan for storing objects was to use JSON format.
+After quick research I've found a plugin for Blender which enables exporting 3D models as JSON files. Models were then loaded into our THREE.js scene using built in JSON loader. Problem occured when there was need for accesing properties of previously loaded JSON objects, namely, said loader used anonymous function in order to load objects geometry and create mesh data, all of which was stored in local variables that are no longer existing after function has finished executing. While it is possible to acces all the objects currently in the scene via THREE.Scene object, it is not a convinient way of doing it, as it contains a lot of elements that will get in the way of certain actions ( such as lights). What we needed was an object in which references to all the JSON loaded objects would be stored. Since default JSON loader does not allow for that, we defined a special handler function to perform this task. It was called in the loader, and in addition to creating the mesh from JSON data, it assigned name and push it into the array where all the other JSON objects were stored.
+
+Object imitating a floating island was initially created after quick crashcourse in Blender. After testing and comparing different export settings for -obj files, we acquired a plugin for Blender allowing to export files for JSON. Export options were rather limited, but worked as intended.
+!!!!!!!
+!!!!!problem with lights!!!! write when u research what it was and why!!!
+!!!!!!
+Urge to experiment with graphics a little more, forged an idea of using procedurally generated island, rather than just a simple blender model.
+!!!!! DESCIRBE PRECEDURAL GRAPHICS, SIMPLEX, AND HOW YOU DID ISLAND.
+!!!!! REFS: THREE SHAPES, HANS,  Amit Patel MAPGEN
+
+
+!!!!SKYBOX!!!!
+
+!!!RTS LIKE CAMERA!!!!!!!!!
+
+!!!!OBJECT PICKING AND INTERACTION!!!!!!!!! TO BE REWRITTEN
+REF STEMKOSKI, MRDOOB
+
+For object interaction, goal was to allow user to adjust objects in the scene. In order to test different solutions and ways of doing that, we rendered a couple of cubes in the scene. Upon clicking on one of them, contex menu was to appear from which user could choose an action to be performed on selected object.
+
+!!I expercienced problems. Deleting the cube was tricky. For some reason I!!t would not allow me to remove it from the scene. Removing other o!!bjects by clicking the delete button worked well. It might have s!!omething to do with the fact that cubes were in the array of 3!!DObjects, and both of them were added to the scene, on the other hand, c!!hanging said cubes position was not a problem. I will work on this i!!ssue and share results.
+
+!!!!WORD ON KEYBOARDINPUT !!!!
+REF THIS PENSUM WEBGL BOOOK!!!!!
+
+
+
+!!ADDING NEW OBJECTS!!!!!
+Adding new objects with just a simple function call is easy, yet still I am reworking the code in order to make it more reusable. Another problem is with the JSON loader which for time being prevents me from accesing certain properties of imported object after it has been loaded. As a result it temporary halted by progress in several tasks. I will not focus on resolving this issue, as it crucial for creating proper interactive enviroment.
+
+!!EDITOR!!!!!
+
+!! PET AND ANIMATION!!!
+
+
+
+For objects and creatures I have attempted to use very thin cube instead of a plane as a base to be rendered on, with terrible results. After more research I have discovered that it is possible to extrude images with three.js which we might do. There are several things that we have to consider such as animations and whether it is possible to extrude animated 2d character the same way. To find out I will need to get some animated characters first. It might be very tricky topic here and I will be describing it in more detail in next report note.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
