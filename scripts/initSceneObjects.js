@@ -16,28 +16,28 @@ function initSceneObjects()
 function makeAMesh ()
 {
     //Making pets
-    pets[0] = new Pet("img/Pet/pet.png", 75, 25, 150);
-    pets[1] = new Pet("img/Pet/pet.png", 140, 25, 175);
+    pets[0] = new Pet("img/Pet/pet.png", -50, 25, 0);
+    pets[1] = new Pet("img/Pet/pet.png", 120, 25, 150);
 
     //Making food object
     var parametersObject =
     {
-        "position" : new THREE.Vector3(100,25,100),
+        "position" : new THREE.Vector3(70,25,70),
         "texture"  : '../img/Inside/food.png',
         "nameId"   : 'food01',
         "sizeX"    : 25,
         "sizeY"    : 25,
-        "smellRad" : 20,
-        "soundRad" : 0,
+        "smellRad" : 50,
+        "soundRad" : 100,
         "isStatic" : true,
         "hasSmell" : true,
-        "hasSound" : false,
+        "hasSound" : true,
         "hasAni"   : false,
         "initValue": 60
     };
     objects[1] = new Object(parametersObject);
     parametersObject.position = new THREE.Vector3(50,25,120);
-    objects[2] = new Object(parametersObject);
+    //objects[2] = new Object(parametersObject);
     parametersObject.position = new THREE.Vector3(140,25,150);
-    objects[2] = new Object(parametersObject);
+    //objects[2] = new Object(parametersObject);
 }

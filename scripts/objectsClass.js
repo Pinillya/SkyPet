@@ -1,6 +1,7 @@
 //Illy Binfield, 2014, objectClass.js
 //The object class will be used as a baseclass for all the objects on the scene.
 // the objects inherite from this class all the basic attributes like small, sound and so on.
+var touching = false;
 function Object (parimiters)
 {
 	//Different variables all the objects will have
@@ -9,7 +10,7 @@ function Object (parimiters)
 	this.position = parimiters.position;
 	this.texture = parimiters.texture;
 
-	this.hasSmell = parimiters.hasSmell;
+	this.testSmell = false;
 	this.smellRadius = parimiters.smellRad;
 	this.hasSound = parimiters.hasSound;
 	this.soundRadius = parimiters.soundRad;
@@ -17,6 +18,8 @@ function Object (parimiters)
 	this.isStatic = parimiters.isStatic;
 	this.hasAnimation = parimiters.hasAni;
 	this.initialValue = parimiters.initValue;
+
+	this.touching = touching;
 
 	if (this.hasAnimation)
 	{
@@ -45,14 +48,17 @@ Object.prototype.objectSmellSound = function(petPos, areaDevider)
 {
 	var objToPetTargetPos = new THREE.Vector3(0,0,0);
 
-	if (this.hasSound)
+	if (this.testSmell)
 	{
-		errorArea = this.soundRadius/areaDevider;
-	}
-	else if (this.hasSmell)
-	{
+		console.log(" Testing smell");
 		errorArea = this.smellRadius/areaDevider;
+	}
+	else if (this.hasSound)
+	{
+		console.log ("Testing Sound");
+		errorArea = this.soundRadius/areaDevider;
 	};
+
 
     //Pos X
 	if (petPos.x > this.position.x)
@@ -89,29 +95,38 @@ Object.prototype.meshAnimation = function()
 //If the pet is touching the object,- dont check for the object anymore.
 //If the pet can see the object there is no use for the smell check or the sound check.
 //As it is easier to locate the origo of a sound, this will be checked by the pet before smell.
-var touching = false;
 Object.prototype.encounter = function(petPos, itemNumber) //name is Encountering instead?
 {
 	var distanceToPet = this.plane.position.distanceTo(petPos);
 	var soundInRange = 0, smellInRange = 0, seesObject = false;
 
-	if (!touching){
-		if (distanceToPet < 2)
+	if (!this.touching){
+		if (distanceToPet < 10)
 		{
-			touching = true;
+			this.touching = true;
 			console.log("touching = true");
 		}
-		else if (this.hasSound)
+		
+		if (this.hasSound)
 		{
 			soundInRange = objects[itemNumber].distanceCheck(this.soundRadius, distanceToPet);
 		}
-		else if (this.hasSmell)
-		{
-			smellInRange = objects[itemNumber].distanceCheck(this.smellRadius, distanceToPet);
-		};
-	}
+		
+		smellInRange = objects[itemNumber].distanceCheck(this.smellRadius, distanceToPet);
 
-	return [soundInRange, smellInRange, touching, this.idNumber];
+		if (smellInRange == 1 || smellInRange == 2)
+		{
+			this.testSmell = true;
+			return [smellInRange, soundInRange, this.touching, this.idNumber];
+		}
+		else 
+		{
+			this.testSmell = false;
+			return [smellInRange, soundInRange, this.touching, "0"];
+		}
+	}
+	
+	return [0, 0, this.touching, "0"];
 };
 
 //Checks distance to target based on the relevant range to check against.
@@ -128,7 +143,7 @@ Object.prototype.distanceCheck = function(radiusCheck, distanceToPet)
 			return 1;
 		};
 	};
-}
+};
 
 /*
 	Object.prototype.visionCheck = function(petPos)

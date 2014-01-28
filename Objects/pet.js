@@ -50,12 +50,12 @@ Pet.prototype.moving = function(frameCounter)
     //The pet finds random positions to walk to if it wants to explore
 	if (frameCounter == 50 && this.exploring)
 	{
-		console.log(this.pet + " is exploring!");
+		console.log(this.pet.position.x + " is exploring! " + this.pet.position.z);
 		var ranNumX = 100, ranNumZ = 0, ranNumY = 0;
 
-		ranNumX = THREE.Math.random16() * 50;
-		ranNumY = THREE.Math.random16() * 50;
-		ranNumZ = THREE.Math.random16() * 50;
+		ranNumX = Math.floor(-100 + THREE.Math.random16() * 400);
+		//ranNumY = THREE.Math.random16() * 0;
+		ranNumZ = -100 + THREE.Math.random16() * 400;
 
 		this.targetPosition = new THREE.Vector3(ranNumX,ranNumY,ranNumZ);
 	};
@@ -114,7 +114,7 @@ Pet.prototype.checkObjects = function(petNumber, itemNumber)
 		return;
 	}
 	var petObjectInput = objects[itemNumber].encounter(this.pet.position, itemNumber);
-	console.log(this.pet.position + " has ecnountered iten #" + itemNumber);
+	//console.log(this.pet.position + " has ecnountered item #" + itemNumber);
 
 	if (petObjectInput[2])
 	{
@@ -122,20 +122,26 @@ Pet.prototype.checkObjects = function(petNumber, itemNumber)
 	}
 	else if (petObjectInput[0] == 2 || petObjectInput[0] == 1)
 	{
-		this.exploring = false;
-		this.targetPosition = objects[itemNumber].objectSmellSound(this.pet.position, petObjectInput[0]+1);
-		console.log (petObjectInput[0]);
+		pets[petNumber].petBehaviour(itemNumber, petObjectInput[3], petObjectInput[0]+1);
+		//this.exploring = false;
+		//this.targetPosition = objects[itemNumber].objectSmellSound(this.pet.position, petObjectInput[0]+1);
+		//console.log (petObjectInput[0]);
 	}
 	else if (petObjectInput[1] == 2 || petObjectInput[1] == 1)
 	{
-		this.exploring = false;
-		this.targetPosition = objects[itemNumber].objectSmellSound(this.pet.position, petObjectInput[1]+1);
-		console.log (petObjectInput[1]);
+		console.log ("This fare");
+		pets[petNumber].petBehaviour(itemNumber, petObjectInput[3], petObjectInput[1]+1);
+		//this.exploring = false;
+		//this.targetPosition = objects[itemNumber].objectSmellSound(this.pet.position, petObjectInput[1]+1);
+		//console.log (petObjectInput[1]);
 	};
 };
 
-Pet.prototype.petInterst = function()
+Pet.prototype.petBehaviour = function(itemNumber, itemNameId, radInput)
 {
+	this.targetPosition = objects[itemNumber].objectSmellSound(this.pet.position, radInput);
+	this.exploring = false;
+
 };
 
 
