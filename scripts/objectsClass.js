@@ -100,11 +100,16 @@ Object.prototype.encounter = function(petPos, itemNumber) //name is Encountering
 	var distanceToPet = this.plane.position.distanceTo(petPos);
 	var soundInRange = 0, smellInRange = 0, seesObject = false;
 
-	if (!this.touching){
+	//if (!this.touching)
+	//{
 		if (distanceToPet < 10)
 		{
 			this.touching = true;
 			console.log("touching = true");
+		}
+		else
+		{
+			this.touching = false;
 		}
 		
 		if (this.hasSound)
@@ -124,9 +129,9 @@ Object.prototype.encounter = function(petPos, itemNumber) //name is Encountering
 			this.testSmell = false;
 			return [smellInRange, soundInRange, this.touching, "0"];
 		}
-	}
+	//}
 	
-	return [0, 0, this.touching, "0"];
+	return [smellInRange, soundInRange, this.touching, this.idNumber];
 };
 
 //Checks distance to target based on the relevant range to check against.
