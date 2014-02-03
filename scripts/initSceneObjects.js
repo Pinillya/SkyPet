@@ -17,6 +17,7 @@ function makeAMesh ()
 {
     //Making pets
     pets[0] = new Pet("img/Pet/pet.png", -50, 25, 0);
+    pets[0].moods();
 
     //Making food object
     var parametersObject =

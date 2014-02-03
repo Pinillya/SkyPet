@@ -56,6 +56,7 @@ function movePets ()
         {
             for (var j = objects.length - 1; j >= 0; j--) {
                 pets[i].checkObjects(i, j);
+
             };
         };
     };
@@ -65,7 +66,7 @@ function movePets ()
     for (var i = pets.length - 1; i >= 0; i--)
     {
         pets[i].moving(frameCounter);
-        pets[i].moods();
+        pets[i].moodsAdjusters();
     };
 }
 

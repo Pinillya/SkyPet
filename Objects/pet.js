@@ -11,7 +11,7 @@ var exploring = true;
 var encounterTouching = false;
 
 //The pets mood is a vector2 on a mood scale.
-var petsCurrentMood = new THREE.Vector2(0,0);
+var petsCurrentMood = new THREE.Vector2(5,0);
 
 // If the pet reacts to something unexpected, the pet will addjust its mood
 var petMoodAdjusters =
@@ -20,25 +20,39 @@ var petMoodAdjusters =
     "surprised"         : [0,+7]
 };
 
-//Pet needs
+//Pet needs - needs that will decrease as time passes
 var petNeeds =
 {
-    "HungerLevel"      : 100,
-    "EnergyLevel"      : 100,
-    "LoveLevel"        : 100,
-    "HungerAdjuster"   : 0.9,
-    "EnergyAdjuster"   : 0.9,
-    "LoveAdjuster"     : 0.9
+    "hungerLevel"      : 100,
+    "foodDigesting"    : 0,
+    "sleepLevel"       : 100,
+    "hungerAdjuster"   : 0.99,
+    "sleepAdjuster"    : 0.99,
 };
 
 //Depending on where the pet is on the XY mood scale, it will be in different moods. 
 var petMoods =
 {
-    "agressive"         : [0,0],
-    "scared"            : [-3,+5],
-    "curious"           : [0,0],
-    "relaxed"           : 0,
-    "playfull"          : 0
+    "agressive"         : [-7,5],
+    "scared"            : [-3,5],
+    "uncomfertable"     : [-3,-2],
+    "curious"           : [-3,-2],
+    "playfull"          : [0,2],
+    "relaxed"           : [0,0],
+    "sad"               : [0,0],
+    "depressed"         : [-3,-2]
+};
+
+var petMoodsBool =
+{
+    "agressive"         : false,
+    "scared"            : false,
+    "uncomfertable"     : false,
+    "curious"           : false,
+    "playfull"          : false,
+    "relaxed"           : false,
+    "sad"               : false,
+    "depressed"         : false
 };
 
 //Depending on the pets different moods, it will have different actions it wants to do.
@@ -149,10 +163,91 @@ Pet.prototype.moving = function(frameCounter)
 	};
 };
 
+Pet.prototype.moodsAdjusters = function()
+{
+	if (petNeeds.sleepLevel < 1 && petNeeds.sleepLevel > 0) 
+	{
+		petsCurrentMood.y -= 1;
+		petNeeds.sleepLevel = 0;
+		pets[0].moods();
+		console.log (petsCurrentMood.y + " petsCurrentMood.y " );
+	} else {
+		petNeeds.sleepLevel *= petNeeds.sleepAdjuster;
+	};
+};
+
+
 Pet.prototype.moods = function()
 {
-
-
+	//Setting the moods:
+	//First Check Bad
+	if (petsCurrentMood.x < petMoods.agressive[0])
+	{
+		if(petsCurrentMood.y > petMoods.agressive[1])
+		{
+			petMoodsBool.agressive  = true;
+			console.log (petMoodsBool.agressive + "petMoodsBool.agressive")
+		}
+	};
+	if (petsCurrentMood.x < petMoods.scared[0])
+	{
+		if(petsCurrentMood.y > petMoods.scared[1])
+		{
+			petMoodsBool.scared  = true;
+			console.log (petMoodsBool.scared + "petMoodsBool.scared")
+		}
+	};
+	if (petsCurrentMood.x < petMoods.uncomfertable[0])
+	{
+		if(petsCurrentMood.y > petMoods.uncomfertable[1])
+		{
+			petMoodsBool.uncomfertable  = true;
+			console.log (petMoodsBool.uncomfertable + "petMoodsBool.uncomfertable")
+		}
+	};
+	//SeconCheck Bad
+	if (petsCurrentMood.x < petMoods.sad[0])
+	{
+		if(petsCurrentMood.y < petMoods.sad[1])
+		{
+			petMoodsBool.sad  = true;
+			console.log (petMoodsBool.sad + "petMoodsBool.sad")
+		}
+	};
+	if (petsCurrentMood.x < petMoods.depressed[0])
+	{
+		if(petsCurrentMood.y < petMoods.depressed[1])
+		{
+			petMoodsBool.depressed  = true;
+			console.log (petMoodsBool.depressed + "petMoodsBool.depressed")
+		}
+	};
+	//Thirs Check Good
+	if (petsCurrentMood.x > petMoods.curious[0])
+	{
+		if(petsCurrentMood.y > petMoods.curious[1])
+		{
+			petMoodsBool.curious  = true;
+			console.log (petMoodsBool.curious + "petMoodsBool.curious")
+		}
+	};
+	if (petsCurrentMood.x > petMoods.playfull[0])
+	{
+		if(petsCurrentMood.y > petMoods.playfull[1])
+		{
+			petMoodsBool.playfull  = true;
+			console.log (petMoodsBool.playfull + "petMoodsBool.playfull")
+		}
+	};
+	//Final good check
+	if (petsCurrentMood.x > petMoods.relaxed[0])
+	{
+		if(petsCurrentMood.y < petMoods.relaxed[1])
+		{
+			petMoodsBool.relaxed  = true;
+			console.log (petMoodsBool.relaxed + "petMoodsBool.relaxed")
+		}
+	};
 };
 
 
@@ -207,23 +302,23 @@ Pet.prototype.petBehaviour = function(itemNumber, itemNameId, radInput, petNumbe
 
 	if (itemNameId == '0')
 	{
-		console.log (" itemNameId = 0 , " + petNumber);
+		//console.log (" itemNameId = 0 , " + petNumber);
 		//check if interested
 	} else
 	{
-		console.log (" itemNameId != 0 ");
+		//console.log (" itemNameId != 0 ");
 		for (var i = this.petItemsKnown.length - 1; i >= 0; i--) 
 		{
 			if (this.petItemsKnown[i] == itemNameId) 
 			{
 				isItemKnown = true;
-				console.log (" itemNameId != 0knows it " + petNumber);
+				//console.log (" itemNameId != 0knows it " + petNumber);
 			}
 		};
 
 		if (!isItemKnown)
 		{
-			console.log (" itemNameId != 0 didntKnow " + petNumber);
+			//console.log (" itemNameId != 0 didntKnow " + petNumber);
 			this.petItemsKnown[0] = itemNameId;
 		};
 	};
@@ -233,9 +328,10 @@ Pet.prototype.petBehaviour = function(itemNumber, itemNameId, radInput, petNumbe
 
 Pet.prototype.testingInterest = function(itemNumber, radInput, itemNameId)
 {
-	if (itemNameId[0] == petActions.eat)
+	if (itemNameId == petActions.eat)
 	{
-		console.log ('This is the food you are looking for')
+		//Find expected emotion, if not, se how fare off it is and act on that
+		//console.log ('This is the food you are looking for')
 		this.targetPosition = objects[itemNumber].objectSmellSound(this.pet.position, radInput);
 		this.exploring = false;
 	}

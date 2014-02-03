@@ -50,12 +50,12 @@ Object.prototype.objectSmellSound = function(petPos, areaDevider)
 
 	if (this.testSmell)
 	{
-		console.log(" Testing smell");
+		//console.log(" Testing smell");
 		errorArea = this.smellRadius/areaDevider;
 	}
 	else if (this.hasSound)
 	{
-		console.log ("Testing Sound");
+		//console.log ("Testing Sound");
 		errorArea = this.soundRadius/areaDevider;
 	};
 
@@ -105,7 +105,7 @@ Object.prototype.encounter = function(petPos, itemNumber) //name is Encountering
 		if (distanceToPet < 10)
 		{
 			this.touching = true;
-			console.log("touching = true");
+			//console.log("touching = true");
 		}
 		else
 		{
