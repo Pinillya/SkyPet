@@ -65,6 +65,7 @@ function movePets ()
     for (var i = pets.length - 1; i >= 0; i--)
     {
         pets[i].moving(frameCounter);
+        pets[i].moods();
     };
 }
 

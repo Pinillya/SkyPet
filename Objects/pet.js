@@ -10,6 +10,54 @@ var hovering = 100;
 var exploring = true;
 var encounterTouching = false;
 
+//The pets mood is a vector2 on a mood scale.
+var petsCurrentMood = new THREE.Vector2(0,0);
+
+// If the pet reacts to something unexpected, the pet will addjust its mood
+var petMoodAdjusters =
+{
+    "disapointed"       : [-2,-2],
+    "surprised"         : [0,+7]
+};
+
+//Pet needs
+var petNeeds =
+{
+    "HungerLevel"      : 100,
+    "EnergyLevel"      : 100,
+    "LoveLevel"        : 100,
+    "HungerAdjuster"   : 0.9,
+    "EnergyAdjuster"   : 0.9,
+    "LoveAdjuster"     : 0.9
+};
+
+//Depending on where the pet is on the XY mood scale, it will be in different moods. 
+var petMoods =
+{
+    "agressive"         : [0,0],
+    "scared"            : [-3,+5],
+    "curious"           : [0,0],
+    "relaxed"           : 0,
+    "playfull"          : 0
+};
+
+//Depending on the pets different moods, it will have different actions it wants to do.
+var petActions =
+{
+    "eat"            : 'food',
+    "sleep"          : 'sleep',
+    "washSelf"       : 'washSelf',
+    "fight"          : 'fight',
+    "runAway"        : 'run',
+    "threaten"       : 'threaten',
+    "talkTo"         : 'talkTo',
+    "washOther"      : 'washOther',
+    "grabb"          : 'grabb',
+    "push"           : 'push',
+    "exlore"         : 'explore',
+    "jumpOnToppOff"  : 'jumpOn'
+};
+
 function Pet (petTexture, xCoordinates, yCoordinates, zCoordinates)
 {
 	///Make the pet
@@ -44,24 +92,6 @@ function Pet (petTexture, xCoordinates, yCoordinates, zCoordinates)
     this.petItemsKnown = petItemsKnown;
 
     this.encounterTouching = encounterTouching;
-/*
-     var parametersObject =
-    {
-        "position" : new THREE.Vector3(70,25,70),
-        "texture"  : '../img/Inside/food.png',
-        "nameId"   : 'food01',
-        "sizeX"    : 25,
-        "sizeY"    : 25,
-        "smellRad" : 50,
-        "soundRad" : 100,
-        "isStatic" : true,
-        "hasSmell" : true,
-        "hasSound" : true,
-        "hasAni"   : false,
-        "initValue": 60
-    };
-*/
-
 }
 //Function to make the pet move with a target pos,
 //Finding random target points the pet can walk to if bored
@@ -119,6 +149,13 @@ Pet.prototype.moving = function(frameCounter)
 	};
 };
 
+Pet.prototype.moods = function()
+{
+
+
+};
+
+
 //Pet X checks objectX as initiated in the main script in "makeAMesh"
 //We initiate the items "encounter" to gain insight into the items distance to the pet
 //and weather or not the pet smells/hears or hits the target.
@@ -170,7 +207,7 @@ Pet.prototype.petBehaviour = function(itemNumber, itemNameId, radInput, petNumbe
 
 	if (itemNameId == '0')
 	{
-		//console.log (" itemNameId = 0 , " + petNumber);
+		console.log (" itemNameId = 0 , " + petNumber);
 		//check if interested
 	} else
 	{
@@ -188,20 +225,20 @@ Pet.prototype.petBehaviour = function(itemNumber, itemNameId, radInput, petNumbe
 		{
 			console.log (" itemNameId != 0 didntKnow " + petNumber);
 			this.petItemsKnown[0] = itemNameId;
-		}
+		};
 	};
-	this.targetPosition = objects[itemNumber].objectSmellSound(this.pet.position, radInput);
-	this.exploring = false;
 
+	pets[petNumber].testingInterest(itemNumber, radInput, itemNameId);
 };
 
-Pet.prototype.testing = function()
+Pet.prototype.testingInterest = function(itemNumber, radInput, itemNameId)
 {
-	//pets[1].petItemsKnown[0] = 'two';
-	//pets[2].petItemsKnown[0] = 'three';
-	//pets[3].petItemsKnown[0] = 'four';
-	//this.petItemsKnown[0] = "one";
-	//console.log (" This.pet " );
+	if (itemNameId[0] == petActions.eat)
+	{
+		console.log ('This is the food you are looking for')
+		this.targetPosition = objects[itemNumber].objectSmellSound(this.pet.position, radInput);
+		this.exploring = false;
+	}
 };
 
 

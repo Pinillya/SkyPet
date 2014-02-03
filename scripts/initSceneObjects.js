@@ -23,7 +23,7 @@ function makeAMesh ()
     {
         "position" : new THREE.Vector3(70,25,70),
         "texture"  : '../img/Inside/food.png',
-        "nameId"   : 'food01',
+        "nameId"   : 'food',
         "sizeX"    : 25,
         "sizeY"    : 25,
         "smellRad" : 50,
