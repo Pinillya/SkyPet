@@ -1,0 +1,124 @@
+// ANIMATOR 101
+
+
+// Link js file to document.
+
+// For best use of animator class  all textures and coresponding JSON files should be in the same folder.
+
+// Starting with an object to animate:
+
+function aPet()
+{
+
+	// Within the object we wish to animate we create animator instance:
+
+	this.animator = new Animator(this);
+
+	// we are passing "this" as an argument to make it easier for animator to reference to certain parts of our objects should this be needed.
+
+	// Next, we need to setup spritesheets to be loaded. Lets make an array to store them:
+
+	this.sheets = ["Fly2Sprite", "fly", "IdleSprite2", "idle2", "Walk2", "walk"];
+
+	// So in this case, "FlySprite" is the name of JSON file stored in our folder, and "fly" is the ID (animID), we will be using to recognize it. So while creating this array we must follow this pattern.
+
+	this.sheets = ["filename1", "ID1", "filename2", "ID2", "filename3", "ID3"];
+
+	// Since we only tell Animator how the files are called and al the files with their correspondiong textures are stored in the same folder, we will now pass this information the Animator:
+
+	this.animator.setSheetsURL("../img/Pet/anim/");
+
+	// Now, whenever we wil be looking for a JSON file or texture, we will be searching this folder.
+
+	// Now lets load those sprite sheets:
+
+	this.animator.loadSheets(this.shets);
+
+	// And now they are loaded into Animator. If we wish to add only one sheet we can use loadSheetData(sheet, id) to do it just as well. In fact, loadSheets() methods only reads the array and calls loadSheetData several times.
+
+	// Now that we have our sheets loaded, we can use one to create a texture for our object. We do it using textureFromSheet(animId) function. It takes string which is the ID of our desired spritesheet we loaded before and uses it to acces the texture file, and return in to us. So we wish to start up with an idle animation which we called "idle2":
+
+	var texture = this.animator.textureFromSheet("idle2")
+
+	// Now just making material, standard THREE stuff:
+
+	this.material = new THREE.MeshBasicMaterial(
+	{
+		map: texture,
+		side: THREE.DoubleSide,
+		transparent: true,
+		alphaTest: 0.5
+	});
+
+	this.material.map.needsUpdate = true;
+
+	// Now that we have our material finished we need to reference it to the animator.
+
+	this.animator.referenceMaterial(this.material);
+
+	// This is needed for things such as changing textures withing the animator class.
+
+	// Now some more standard THREE things
+
+	var geometry = new THREE.PlaneGeometry(50, 75, 1, 1);
+	var mesh = new THREE.Mesh(geometry, this.material);
+	mesh.position.set(10, 50, 110);
+
+	// And then something weird:
+
+	mesh.rotation.x = 180 * (Math.PI / 180);
+
+	// We flip the mesh upside down. Reason for that is that we are not flipping textures Y when setting it to the mesh. For some reason it makes all sorts of weird things happen to animation. So to compensate for an upside down texture we are flipping the mesh. There are most likely more elegant solutions for this. but this works for now.
+
+	// At last, we add our mesh to the scene, so it can be displayed.
+
+	scene.add(mesh);
+
+}
+
+// Now when we create a new instance of aPet:
+
+var myPet = new aPet();
+
+// it will spawn with it's idle animation running, right?
+
+// No.
+
+// There is one more thing. We need to make it move somehow. So in the draw/render/animate function we need to do this:
+
+if (myPet)
+{
+	myPet.animator.update(1000 * delta);
+}
+
+// First we are making sure that this runs only when myPet exists so that the interpreter wont go bonkers, next we call the Animators update function which takes delta as parameter.
+
+// To get delta we can create clock somewhere safe:
+
+var clock = new THREE.Clock();
+
+// and then comeback to our draw/animate/render function and do the following:
+
+var delta = clock.getDelta();
+
+// And that's it. Idle animation should be running now.
+
+// What now?
+
+// If you want to change sprite sheet, you must first have it loaded, you know how to do it already. then all you have to do is call the play() method. So if we want fly animation to play we would just do:
+
+myPet.animator.play("fly");
+
+// If there are several animations on the sheet, and you only want to play one of them, or just a small part of longer animation you can chose frame range, using also play method:
+
+myPet.animator.play("fly", 10, 20);
+
+// Now animation will start at frame 10, and once it reaches frame 20 it will go back to 10 and so on.
+
+// Animation can be paused and resumed using:
+
+myPet.animator.pause();
+
+// and
+
+myPet.animator.resume();

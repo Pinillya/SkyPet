@@ -1,0 +1,162 @@
+function initIslandOBJ()
+{
+  loaderOBJ.load("../models/island.obj", function (object)
+  {
+    object.traverse(function (child)
+    {
+      if(child instanceof THREE.Mesh)
+      {
+        child.material.map = texture;
+      }
+    });
+    object.position.y = 0;
+    scene.add(object);
+  });
+}
+
+/*function makeHandler(meshName) {
+    return function(geometry) {
+        mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({vertexColors: THREE.FaceColors}));
+        mesh.scale.set(0.2, 0.2, 0.2);
+        mesh.doubleSided = true;
+        scene.add(mesh);
+        meshes[meshName] = mesh;
+    };
+}
+
+// Load the JSON files
+var meshes = new Object();
+var jsonFileNames = ['assembly/part1.json', 'assembly/part2.json', 'assembly/part3.json'];
+for(var i = 0; i < jsonFileNames.length; i++){
+    var loader = new THREE.JSONLoader();
+    var meshName = jsonFileNames[i].split("/")[1].split(".")[0];
+    loader.load(jsonFileNames[i], makeHandler(meshName));
+}
+
+// ....
+
+// Access their meshes
+meshes[meshName].visible = true;*/
+
+function initIsland()
+{
+    var texurl =  "../models/island/island_texture.png";
+    var modelUrl = "../models/island.js";
+    var tex = THREE.ImageUtils.loadTexture(texurl);
+    var name = "island";
+    var material = Physijs.createMaterial(
+               new THREE.MeshPhongMaterial({ map: tex}),
+               0.8, // high friction
+               0.4 // low restitution
+               );
+    loaderJSON.load( modelUrl,  addIsland(name, material, tex));
+}
+function addIsland(meshName, material, tex) {
+    return function(geometry) {
+        mesh = new Physijs.BoxMesh(geometry, material, 0);
+        mesh.scale.set(4,4,4);
+        mesh.rotation.x = Math.PI/2;
+
+        // mesh.recieveShadow = true;
+        meshesJSON[meshName] = mesh;
+        meshesJSON[meshName].position.set(0,0,0);
+        scene.add(mesh);
+
+    };
+}
+
+
+
+var mouseVec = new THREE.Vector3();
+var projector = new THREE.Projector();
+var windowHalfX = window.innerWidth / 2;
+var windowHalfY = window.innerHeight / 2;
+var mouseX = 0;
+var mouseY = 0;
+var pos;
+var destination;
+objects = [];
+
+function onDocumentMouseDown(e)
+{
+    var planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    var mv = new THREE.Vector3(
+    (mouseX/ window.innerWidth) * 2 - 1,
+    -(mouseY / window.innerHeight) * 2 + 1,
+    0.5 );
+    var raycaster = projector.pickingRay(mv, camera);
+    pos = raycaster.ray.intersectPlane(planeZ);
+    console.log(mouseX, mouseY);
+    var sphere = new THREE.Mesh(new THREE.SphereGeometry(10), new THREE.MeshLambertMaterial());
+         sphere.position.set(mouseX, 5, mouseY);
+         scene.add(sphere);
+}
+function onDocumentMouseDown2(e)
+{
+    var planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    objects.push(planeZ);
+    var vector = new THREE.Vector3(
+    (mouseX / window.innerWidth) * 2 - 1,
+    -(mouseY / window.innerHeight) * 2 + 1,
+    0.5 );
+    projector.unprojectVector( vector, camera );
+
+    var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+    var intersects = raycaster.ray.intersectPlane( planeZ );
+    console.log("time for if");
+    if ( intersects.length > 0 ){
+         console.log("if working");
+        var sphere = new THREE.Mesh(new THREE.SphereGeometry(20 / 4), new THREE.MeshLambertMaterial(intensity));
+        sphere.position = intersects[ 0 ].point;
+        scene.add(sphere);
+     console.log(mouseX, mouseY);
+    }
+Animator.prototype.addSheet = function(sheet, name)
+{
+  if (sheet)
+  {
+    if (name)
+    {
+      sheet.animId = name;
+    }
+    this.sheets.push(sheet);
+  }
+  else
+    console.log("invaliod sprite obj");
+};
+Animator.prototype.getSheet = function(index)
+{
+  if (this.sheets.length >= index)
+  {
+    return this.sheets[index];
+  }
+};
+Animator.prototype.getAllSheets = function()
+{
+  return this.sheets;
+};
+Animator.prototype.removeSheet = function(index)
+{
+  if (typeof index === 'number' && index <= this.sheets.length)
+  {
+    this.sheets.splice(index, 1);
+  }
+  else if (typeof index === 'string')
+  {
+    var i;
+    for (i = 0; i < this.sheets.length; i++)
+    {
+      if (this.sheets[i].animId == index)
+      {
+        this.sheets.splice(i, 1);
+      }
+    }
+  }
+};
+Animator.prototype.removeAllSheets = function()
+{
+  this.sheets = [];
+};
+Animator.prototype.update = function() {
+
+};

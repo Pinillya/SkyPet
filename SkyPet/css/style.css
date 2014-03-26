@@ -1,0 +1,117 @@
+#camDivTop, #camDivRight, #camDivLeft, #camDivBottom
+{
+    /*visibility: hidden;*/
+    opacity:0;
+    z-index: 2;
+}
+#camDivTop
+{
+
+    position: absolute;
+    float: top;
+    left: 0px;
+    top: 0;
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    background-color: eeffaa;
+    border-radius: 2px;
+    border-color: ee4499;
+    /*overflow:hidden;*/
+
+}
+#camDivBottom
+{
+
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    background-color: eeffaa;
+    border-radius: 2px;
+    border-color: 0xee4499;
+}
+#camDivLeft
+{
+
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 50px;
+    text-align: center;
+    background-color: eeffaa;
+    border-radius: 2px;
+    border-color: 0xee4499;
+}
+#camDivRight
+{
+
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 100%;
+    width: 50px;
+    text-align: center;
+
+}
+
+#editorMain
+{
+    position:absolute;
+    top:50px;
+    right:50px;
+    width:40%;
+    height:50%;
+    padding: 10 10 10 10;
+    background-color: #dddd99;
+    box-shadow: 3px 3px 2px #333344;
+    border-style:solid;
+    border-color:#dadada #dedede;
+    z-index: 3;
+}
+#itemDisplay
+{
+    position:absolute;
+    top:10px;
+
+    width:80%;
+    height: 80%;
+    padding: 5px 5px 5px 5px;
+    background-color: #eeeeee;
+
+    border-style:solid;
+    border-color: #aabbee;
+}
+#item
+{
+    float:left;
+    width:75px;
+    height:75px;
+    margin: 7 7 7 7;
+    background-color: #eeaadd;
+    background-size: contain;
+    box-shadow: 1px 1px 1px #888888;
+    border-style:solid;
+    border-color:#aabbee #ddbbff;
+    text-align: center;
+    font:15px arial,sans-serif;
+}
+#editorOnOff
+{
+    width: 5%;
+    height: 0;
+    padding-bottom: 5%;
+    position:absolute;
+    top:80%;
+    left:10px;
+    background-color: 887766;
+    background-image: url("../img/icons/icon3.png");
+    background-size: contain;
+    box-shadow: 3px 3px 2px #333344;
+    border-style:solid;
+    border-color:#dadada #dedede;
+    z-index: 5;
+}
